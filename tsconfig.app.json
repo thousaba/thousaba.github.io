@@ -16,7 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Alias ayarı burası */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

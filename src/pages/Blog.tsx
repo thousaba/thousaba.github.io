@@ -14,6 +14,8 @@ import ReactMarkdown from 'react-markdown';
 import { FaSpotify } from 'react-icons/fa';
 import { SiLetterboxd } from 'react-icons/si';
 
+
+
 export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeFile, setActiveFile] = useState<string | null>(null);
@@ -116,13 +118,13 @@ export default function Blog() {
                       <FileHighlight>
                         <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={() => handleFileClick('Interstellar')}>
                           <FileIcon><Film className="size-4 text-slate-400" /></FileIcon>
-                          <FileLabel className="text-md">Interstellar.md</FileLabel>
+                          <FileLabel className="text-md">Interstellar</FileLabel>
                         </File>
                       </FileHighlight>
                       <FileHighlight>
-                        <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={() => handleFileClick('Nocturnal-Animals')}>
+                        <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={() => handleFileClick('sunset-limited')}>
                           <FileIcon><Film className="size-4 text-slate-400" /></FileIcon>
-                          <FileLabel className="text-md">Nocturnal Animals.md</FileLabel>
+                          <FileLabel className="text-md">Sunset Limited</FileLabel>
                         </File>
                       </FileHighlight>
                     </FolderContent>

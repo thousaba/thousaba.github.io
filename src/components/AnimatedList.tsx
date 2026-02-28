@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import type { ReactNode, MouseEventHandler, UIEvent } from 'react';
 import { motion, useInView } from 'motion/react';
 
+
 interface AnimatedItemProps {
   children: ReactNode;
   delay?: number;

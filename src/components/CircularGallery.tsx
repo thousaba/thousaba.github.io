@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 type GL = Renderer['gl'];
 
+
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
   let timeout: number;
   return function (this: any, ...args: Parameters<T>) {

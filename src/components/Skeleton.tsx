@@ -12,6 +12,7 @@ export function GallerySkeleton() {
   );
 }
 
+
 // Contact Page
 export function PageSkeleton() {
   return (

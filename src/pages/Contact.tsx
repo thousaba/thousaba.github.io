@@ -4,6 +4,8 @@ import { FaGithub, FaXTwitter } from "react-icons/fa6";
 import { SiGmail } from "react-icons/si";
 import DecryptedText from "../components/DecryptedText";
 
+
+
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(true);
 

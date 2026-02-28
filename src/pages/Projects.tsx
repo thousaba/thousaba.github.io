@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ProjectsSkeleton } from "../components/Skeleton";
 
+
 // 1. Tip Tanımları
 interface Project {
   id: number;
