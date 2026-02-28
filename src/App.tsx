@@ -13,7 +13,7 @@ import NotFound from './components/NotFound';
 
 
 const AVATARS = [
-  { src: "public/images/thousaba.jpg", fallback: "TT" },
+  { src: "/images/thousaba.jpg", fallback: "TT" },
 ]
 
 
