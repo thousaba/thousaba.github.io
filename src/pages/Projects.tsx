@@ -25,15 +25,15 @@ const projectsData: Project[] = [
     techStack: ["React Native", "TypeScript", "Kotlin"],
     status: "Tamamlandı",
     images: [
-      "/public/FutCard/main-page.jpg", 
-      "/public/FutCard/how-to-play.jpg", 
-      "/public/FutCard/options.jpg",
-      "/public/FutCard/store.jpg",
-      "/public/FutCard/pisti-mode.jpg",
-      "/public/FutCard/blind-mode.jpg",
-      "/public/FutCard/uno-mode.jpg",
-      "/public/FutCard/memory-mode-1.jpg",
-      "/public/FutCard/memory-mode-2.jpg"
+      "/FutCard/main-page.jpg", 
+      "/FutCard/how-to-play.jpg", 
+      "/FutCard/options.jpg",
+      "/FutCard/store.jpg",
+      "/FutCard/pisti-mode.jpg",
+      "/FutCard/blind-mode.jpg",
+      "/FutCard/uno-mode.jpg",
+      "/FutCard/memory-mode-1.jpg",
+      "/FutCard/memory-mode-2.jpg"
     ],
     downloadUrl: "https://github.com/thousaba/FootballCard/releases/download/v1.0.0/app-release.apk",
     repoUrl: "https://github.com/thousaba/FootballCard"

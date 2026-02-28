@@ -15,9 +15,9 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const myCards = [
-    { image: "public/images/projects.jpg", text: 'Projects', link: '/projects' },
-    { image: "public/images/blog.jpg", text: 'Blog', link: '/blog' },
-    { image: "public/images/contact.jpg", text: 'Contact', link: '/contact' },
+    { image: "images/projects.jpg", text: 'Projects', link: '/projects' },
+    { image: "images/blog.jpg", text: 'Blog', link: '/blog' },
+    { image: "images/contact.jpg", text: 'Contact', link: '/contact' },
   ]
 
   const handleCardClick = (clickedItem: any) => {
