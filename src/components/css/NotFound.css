@@ -85,7 +85,6 @@
   cursor: pointer;
 }
 
-/* Animasyon Keyframe'leri (Kopyala Yapıştır) */
 @keyframes glitch-anim-1 {
   0% { clip: rect(20px, 9999px, 15px, 0); }
   20% { clip: rect(60px, 9999px, 70px, 0); }

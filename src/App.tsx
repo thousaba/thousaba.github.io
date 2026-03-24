@@ -40,7 +40,7 @@ function App() {
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Aurora />
         </div>
-        <div className="absolute top-8 left-8 z-[60]">
+        <div className="absolute top-8 left-8 z-60">
           <Link to="/" className="flex flex-row items-center gap-4 group cursor-pointer">
             <AvatarGroup className="h-16 -space-x-5">
               {AVATARS.map((avatar, index) => (

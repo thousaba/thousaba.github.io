@@ -1,30 +1,26 @@
 
-/* Ekranı tamamen kaplayan container */
 .loading-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  /* Senin istediğin Mor -> Lacivert geçişi */
   background: linear-gradient(to bottom, #2e1065 0%, #0f172a 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Her şeyin üstünde dursun */
+  z-index: 9999; 
 }
 
-/* Frekans dalgasını tutan kutu */
 .frequency-wave {
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Çubuklar aşağıdan yukarı uzasın */
+  align-items: flex-end; 
   height: 60px;
-  gap: 4px; /* Çubuklar arası boşluk */
+  gap: 4px; 
 }
 
-/* Her bir çubuğun temel stili */
 .bar {
   width: 6px;
   background-color: #00ff41; /* Matrix Green */
@@ -43,7 +39,7 @@
   }
 }
 
-/* Her çubuğa farklı gecikme vererek "Dalga" efekti yaratıyoruz */
+
 .bar:nth-child(1) { animation-delay: 0.1s; }
 .bar:nth-child(2) { animation-delay: 0.2s; }
 .bar:nth-child(3) { animation-delay: 0.3s; }
