@@ -9,7 +9,7 @@ interface ProjectListProps {
 export default function ProjectList({ projects, selectedId, onSelect }: ProjectListProps) {
   return (
     <div className="w-full md:w-1/3 flex flex-col gap-4">
-      <h2 className="text-2xl font-bold text-white mb-2 px-2 border-l-4 border-emerald-500">
+      <h2 className="text-xl md:text-2xl font-bold text-white mb-2 px-2 border-l-4 border-emerald-500">
         Projelerim
       </h2>
 
@@ -18,7 +18,7 @@ export default function ProjectList({ projects, selectedId, onSelect }: ProjectL
           <button
             key={project.id}
             onClick={() => onSelect(project)}
-            className={`cursor-pointer text-left p-5 rounded-xl border transition-all duration-300 group
+            className={`cursor-pointer text-left p-3 md:p-5 rounded-xl border transition-all duration-300 group
               ${
                 selectedId === project.id
                   ? "bg-gray-800 border-emerald-500/50 text-white shadow-lg shadow-emerald-900/20 ring-1 ring-emerald-500/50"

@@ -17,16 +17,16 @@ export default function Contact() {
   if (isLoading) return <PageSkeleton />; 
     return (
         
-        <div className="pt-36 pb-12 px-8 max-w-2xl mx-auto text-white flex flex-col justify-start min-h-full">
+        <div className="pt-24 md:pt-36 pb-12 px-4 md:px-8 max-w-2xl mx-auto text-white flex flex-col justify-start min-h-full">
             <header>
-              <h1 className="text-5xl font-bold mb-6 drop-shadow-md">  
+              <h1 className="text-3xl md:text-5xl font-bold mb-6 drop-shadow-md">
                 <DecryptedText 
                   text="Contact" 
                   animateOn="view" 
                   revealDirection="start" 
                 />
               </h1>
-              <p className="text-xl text-slate-200 leading-relaxed mb-8">Hello I am Tevfik Türkoğlu<br></br> 
+              <p className="text-base md:text-xl text-slate-200 leading-relaxed mb-8">Hello I am Tevfik Türkoğlu<br></br> 
                 Welcome to my personal website, where you can explore the projects I am currently developing and find insights regarding my professional and personal interests!</p>
             </header>
 

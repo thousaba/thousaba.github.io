@@ -35,22 +35,22 @@ export default function Blog() {
   };
 
   return (
-    <div className="pt-36 pb-12 px-8 max-w-7xl mx-auto text-white min-h-full flex flex-col justify-start">
+    <div className="pt-24 md:pt-36 pb-12 px-4 md:px-8 max-w-7xl mx-auto text-white min-h-full flex flex-col justify-start">
 
-      <header className="mb-12 flex flex-col items-center text-center">
-        <h1 className="text-5xl font-bold mb-4 drop-shadow-md">
+      <header className="mb-8 md:mb-12 flex flex-col items-center text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">
           <DecryptedText
             text="Cinephile & Archives"
             animateOn="view"
             revealDirection="start"
           />
         </h1>
-        <p className="text-xl text-slate-300 max-w-2xl">
+        <p className="text-base md:text-xl text-slate-300 max-w-2xl">
           My personal repository of reviews, thoughts, and deep dives. Explore the directories below.
         </p>
       </header>
 
-      <div className="flex flex-row gap-6 h-650px w-full justify-center">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center md:h-162.5">
         <FileTreePanel activeFile={activeFile} onFileClick={handleFileClick} />
         {activeFile && (
           <ContentViewer

@@ -2,12 +2,12 @@
 // Main Page
 export function GallerySkeleton() {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center gap-12 px-10 animate-pulse overflow-hidden">
-      <div className="w-[400px] h-[460px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm -rotate-10 translate-y-12 shadow-xl opacity-70"></div>
-      <div className="w-[420px] h-[480px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm -rotate-6 translate-y-4 shadow-xl opacity-80"></div>
-      <div className="w-[420px] h-[480px] flex-shrink-0 bg-white/20 rounded-2xl backdrop-blur-md z-30 -translate-y-2 shadow-2xl scale-105"></div>
-      <div className="w-[420px] h-[480px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm rotate-6 translate-y-4 shadow-xl opacity-80"></div>
-      <div className="w-[400px] h-[460px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm rotate-10 translate-y-12 shadow-xl opacity-70"></div>     
+    <div className="absolute inset-0 z-20 flex items-center justify-center gap-4 md:gap-12 px-4 md:px-10 animate-pulse overflow-hidden">
+      <div className="hidden md:block w-[400px] h-[460px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm -rotate-10 translate-y-12 shadow-xl opacity-70"></div>
+      <div className="w-[28vw] h-[32vw] md:w-[420px] md:h-[480px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm -rotate-6 translate-y-4 shadow-xl opacity-80"></div>
+      <div className="w-[32vw] h-[36vw] md:w-[420px] md:h-[480px] flex-shrink-0 bg-white/20 rounded-2xl backdrop-blur-md z-30 -translate-y-2 shadow-2xl scale-105"></div>
+      <div className="w-[28vw] h-[32vw] md:w-[420px] md:h-[480px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm rotate-6 translate-y-4 shadow-xl opacity-80"></div>
+      <div className="hidden md:block w-[400px] h-[460px] flex-shrink-0 bg-white/10 rounded-2xl backdrop-blur-sm rotate-10 translate-y-12 shadow-xl opacity-70"></div>
     </div>
   );
 }
@@ -16,7 +16,7 @@ export function GallerySkeleton() {
 // Contact Page
 export function PageSkeleton() {
   return (
-    <div className="pt-36 pb-12 px-8 max-w-2xl mx-auto min-h-full flex flex-col justify-start animate-pulse">
+    <div className="pt-24 md:pt-36 pb-12 px-4 md:px-8 max-w-2xl mx-auto min-h-full flex flex-col justify-start animate-pulse">
       <div className="h-14 bg-white/20 rounded-lg w-2/5 mb-8"></div>      
       <div className="flex flex-col gap-4 mb-10">
         <div className="h-5 bg-white/10 rounded w-full"></div>
@@ -103,16 +103,16 @@ export function ProjectsSkeleton() {
 // --------------------------------------------------------------------------
 export function BlogSkeleton() {
   return (
-    <div className="pt-36 pb-12 px-8 max-w-7xl mx-auto text-white min-h-full flex flex-col justify-start animate-pulse">
-      
+    <div className="pt-24 md:pt-36 pb-12 px-4 md:px-8 max-w-7xl mx-auto text-white min-h-full flex flex-col justify-start animate-pulse">
+
       {/* Header Kısmı */}
-      <header className="mb-12 flex flex-col items-center text-center gap-4">
-        <div className="h-12 w-96 bg-gray-800 rounded-lg" /> {/* Cinephile Başlığı */}
+      <header className="mb-8 md:mb-12 flex flex-col items-center text-center gap-4">
+        <div className="h-10 md:h-12 w-64 md:w-96 bg-gray-800 rounded-lg" /> {/* Cinephile Başlığı */}
         <div className="h-6 w-2/3 max-w-lg bg-gray-800 rounded" /> {/* Alt açıklama */}
       </header>
 
       {/* Ana Konteyner */}
-      <div className="flex flex-row gap-6 h-[650px] w-full justify-center">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center md:h-162.5">
         
         {/* Sol Panel (Başlangıçta geniş olan Dosya Ağacı) */}
         <div className="w-full max-w-3xl border border-gray-700 rounded-xl bg-gray-900 overflow-hidden flex flex-col shadow-2xl">

@@ -17,7 +17,7 @@ interface FileTreePanelProps {
 
 export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanelProps) {
   return (
-    <div className={`relative border border-white/20 rounded-xl bg-gray-900 overflow-hidden shadow-2xl flex flex-col transition-all duration-500 ease-in-out ${activeFile ? 'w-1/3' : 'w-full max-w-3xl'}`}>
+    <div className={`relative border border-white/20 rounded-xl bg-gray-900 overflow-hidden shadow-2xl flex flex-col transition-all duration-500 ease-in-out ${activeFile ? 'w-full md:w-1/3' : 'w-full max-w-3xl'}`}>
       <div className="w-full h-8 bg-gray-800 flex items-center px-4 gap-2 border-b border-white/20 shrink-0">
         <div className="w-3 h-3 rounded-full bg-red-500"></div>
         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>

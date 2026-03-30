@@ -83,7 +83,7 @@ export default function Projects() {
 
   return (
     <>
-      <div className="pt-32 pb-12 px-4 max-w-7xl mx-auto min-h-[85vh] flex flex-col md:flex-row gap-8 relative z-10">
+      <div className="pt-20 md:pt-32 pb-12 px-4 max-w-7xl mx-auto min-h-[85vh] flex flex-col md:flex-row gap-4 md:gap-8 relative z-10">
         <ProjectList
           projects={projectsData}
           selectedId={selectedProject.id}

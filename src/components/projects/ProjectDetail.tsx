@@ -8,14 +8,14 @@ interface ProjectDetailProps {
 export default function ProjectDetail({ project, onImageClick }: ProjectDetailProps) {
   return (
     <div className="w-full md:w-2/3">
-      <div className="h-full bg-gray-900 border border-gray-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden flex flex-col max-h-800px">
+      <div className="h-full bg-gray-900 border border-gray-800 rounded-2xl p-4 md:p-8 shadow-2xl relative overflow-hidden flex flex-col md:max-h-200">
 
         <div key={project.id} className="animate-in fade-in slide-in-from-right-4 duration-300 flex-1 flex flex-col overflow-hidden">
 
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 mb-6 shrink-0">
             <div>
-              <h1 className="text-3xl md:text-5xl font-black text-white mb-3 tracking-tighter">
+              <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white mb-3 tracking-tighter">
                 {project.title}
               </h1>
               <div className="flex flex-wrap gap-2">
@@ -49,7 +49,7 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
           <hr className="border-gray-800 mb-6 shrink-0" />
 
           <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-            <p className="text-gray-300 leading-relaxed text-lg mb-8">
+            <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
               {project.description}
             </p>
 
@@ -57,7 +57,7 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
             {project.images && project.images.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Ekran Görüntüleri</h3>
-                <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {project.images.map((img, index) => (
                     <button
                       key={index}

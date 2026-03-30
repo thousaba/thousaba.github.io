@@ -40,17 +40,17 @@ function App() {
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Aurora />
         </div>
-        <div className="absolute top-8 left-8 z-60">
-          <Link to="/" className="flex flex-row items-center gap-4 group cursor-pointer">
-            <AvatarGroup className="h-16 -space-x-5">
+        <div className="absolute top-4 left-4 md:top-8 md:left-8 z-60">
+          <Link to="/" className="flex flex-row items-center gap-2 md:gap-4 group cursor-pointer">
+            <AvatarGroup className="h-10 md:h-16 -space-x-5">
               {AVATARS.map((avatar, index) => (
-                <Avatar key={index} className="w-16 h-16 border-2 border-black group-hover:scale-110 group-hover:z-10 transition-transform duration-300 shadow-lg">
+                <Avatar key={index} className="w-10 h-10 md:w-16 md:h-16 border-2 border-black group-hover:scale-110 group-hover:z-10 transition-transform duration-300 shadow-lg">
                   <AvatarImage src={avatar.src} />
                   <AvatarFallback>{avatar.fallback}</AvatarFallback>
                 </Avatar>
               ))}
             </AvatarGroup>
-            <span className="font-['Dancing_Script'] text-5xl text-white drop-shadow-lg whitespace-nowrap group-hover:text-slate-300 transition-colors duration-300">
+            <span className="font-['Dancing_Script'] text-2xl md:text-5xl text-white drop-shadow-lg whitespace-nowrap group-hover:text-slate-300 transition-colors duration-300">
               Tevfik Türkoğlu
             </span>
           </Link>
