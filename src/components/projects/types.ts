@@ -8,4 +8,5 @@ export interface Project {
   images?: string[];
   downloadUrl?: string;
   repoUrl?: string;
+  readmeUrl?: string;
 }

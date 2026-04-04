@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import type { Project } from './types';
 
 interface ProjectDetailProps {
@@ -6,6 +8,16 @@ interface ProjectDetailProps {
 }
 
 export default function ProjectDetail({ project, onImageClick }: ProjectDetailProps) {
+  const [readme, setReadme] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!project.readmeUrl) { setReadme(null); return; }
+    fetch(project.readmeUrl)
+      .then(r => r.text())
+      .then(setReadme)
+      .catch(() => setReadme(null));
+  }, [project.readmeUrl]);
+
   return (
     <div className="w-full md:w-2/3">
       <div className="h-full bg-gray-900 border border-gray-800 rounded-2xl p-4 md:p-8 shadow-2xl relative overflow-hidden flex flex-col md:max-h-200">
@@ -52,6 +64,35 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
             <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
               {project.description}
             </p>
+
+            {/* README */}
+            {readme && (
+              <div className="mb-8 prose prose-invert prose-sm max-w-none
+                prose-headings:text-white prose-headings:font-bold
+                prose-h1:text-2xl prose-h2:text-lg prose-h2:text-emerald-400 prose-h2:uppercase prose-h2:tracking-widest
+                prose-p:text-gray-300 prose-li:text-gray-300
+                prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline
+                prose-code:text-emerald-300 prose-code:bg-gray-800 prose-code:px-1 prose-code:rounded
+                prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700
+                prose-hr:border-gray-700
+                prose-img:rounded-lg prose-img:border prose-img:border-gray-700">
+                <ReactMarkdown
+                  components={{
+                    img: ({ src, alt }) => (
+                      <img
+                        src={src}
+                        alt={alt}
+                        onClick={() => src && onImageClick(src)}
+                        className="w-full rounded-lg border border-gray-700 cursor-zoom-in"
+                        loading="lazy"
+                      />
+                    ),
+                  }}
+                >
+                  {readme}
+                </ReactMarkdown>
+              </div>
+            )}
 
             {/* Galeri */}
             {project.images && project.images.length > 0 && (
