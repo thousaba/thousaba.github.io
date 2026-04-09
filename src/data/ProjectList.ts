@@ -1,8 +1,17 @@
 import type { Project } from "../components/projects/types";
 
 export const projectsData: Project[] = [
+  
   {
     id: 1,
+    title: "Portfolio V2",
+    category: "Web Development",
+    description: "Şu an incelediğin, modern web teknolojileri ve 'clean UI' prensipleriyle tasarlanmış kişisel web sitesi.",
+    techStack: ["React", "Tailwind CSS", "Vite"],
+    status: "Tamamlandı"
+  },
+  {
+    id: 2,
     title: "Football Card",
     category: "Mobile Game for Android",
     description: "Arkadaş ortamlarının vazgeçilmezi olmaya aday, React Native ile geliştirilmiş bir futbol kartı oyunu. Birbirinden eğlenceli modlarıyla, futbol temalı kartlarla rakiplerinizi alt edin! İster klasik Pisti modunda, ister Uno modunda oynayın. Hatta hafıza kartlarıyla beyin jimnastiği yapabileceğiniz Memory modu bile var!",
@@ -21,14 +30,6 @@ export const projectsData: Project[] = [
     ],
     downloadUrl: "https://github.com/thousaba/FootballCard/releases/download/v1.0.0/app-release.apk",
     repoUrl: "https://github.com/thousaba/FootballCard"
-  },
-  {
-    id: 2,
-    title: "Portfolio V2",
-    category: "Web Development",
-    description: "Şu an incelediğin, modern web teknolojileri ve 'clean UI' prensipleriyle tasarlanmış kişisel web sitesi.",
-    techStack: ["React", "Tailwind CSS", "Vite"],
-    status: "Tamamlandı"
   },
   {
     id: 3,
@@ -55,4 +56,15 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/wazuh-project",
     readmeUrl: "/Wazuh.md"
   },
+  {
+    id: 5,
+    title: "SignalParse",
+    category: "Cybersecurity",
+    description: "SignalParse is a CLI tool that streams Apache and Nginx access logs, parses them into structured events, and detects common web attacks (SQL Injection, XSS, brute force, path traversal) using a modular signature engine — all with constant memory usage, regardless of file size.",
+    techStack: ["TypeScript", "Node.js", "Commander", "Regex"],
+    status: "Devam Ediyor",
+    repoUrl: "https://github.com/thousaba/SignalParse",
+    readmeUrl: "/SignalParse.md"
+  },
+  
 ];
