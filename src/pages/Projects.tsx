@@ -8,7 +8,7 @@ import { projectsData } from "../data/ProjectList";
 
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<Project>(projectsData[1]);
+  const [selectedProject, setSelectedProject] = useState<Project>(projectsData[0]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

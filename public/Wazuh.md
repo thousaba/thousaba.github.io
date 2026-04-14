@@ -1,15 +1,24 @@
-# Sentryfy — Wazuh Tabanlı Gerçek Zamanlı SIEM Dashboard
+# Sentryfy — Wazuh ve Splunk Tabanlı Gerçek Zamanlı SIEM Dashboard
 
-Windows agent üzerinden Wazuh ile log toplayan, özel kurallarla alert üreten, Telegram bildirimi gönderen ve canlı React dashboard'u olan bir güvenlik izleme projesi.
+Sentryfy; Wazuh ve Splunk gibi güvenlik platformlarından gelen alertleri webhook aracılığıyla yakalar, Node.js backend üzerinden işler ve React tabanlı canlı bir dashboard'a yansıtır. Aynı zamanda Telegram Bot entegrasyonu sayesinde önemli olaylar anında mobil bildirime dönüşür.
+
+
+Proje sürekli geliştirilmekte olup yeni SIEM platformları, olay türleri ve kurallar düzenli olarak eklenmektedir.
 
 ---
 
+
 ## Mimari
 
-```
-Windows Agent (Wazuh) → Wazuh Manager → Webhook (ngrok) → Node.js Backend → React Dashboard
-                                                                          ↓
-                                                                   Telegram Bot
+```     SIEM Platformları
+ ├── Wazuh Manager  ──┐
+ └── Splunk Enterprise ┘
+           │
+     Webhook (POST)
+           │
+     Node.js Backend  (Express + Socket.IO)
+      ├── React Dashboard  (canlı, Socket.IO)
+      └── Telegram Bot     (anlık bildirim)
 ```
 
 ---

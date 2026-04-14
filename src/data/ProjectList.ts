@@ -48,10 +48,10 @@ export const projectsData: Project[] = [
   },
   {
     id: 4,
-    title: "Wazuh Project",
+    title: "Sentryfy",
     category: "Cybersecurity",
     description: "Windows agent üzerinden Wazuh ile log toplayan, özel kurallarla alert üreten, Telegram bildirimi gönderen ve canlı React dashboard'u olan bir güvenlik izleme projesi.",
-    techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex"],
+    techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex", "Telegram Bot API", "Socket.IO", "Splunk"],
     status: "Devam Ediyor",
     repoUrl: "https://github.com/thousaba/wazuh-project",
     readmeUrl: "/Wazuh.md"
