@@ -51,10 +51,10 @@ export const projectsData: Project[] = [
     title: "Sentryfy",
     category: "Cybersecurity",
     description: "Windows agent üzerinden Wazuh ile log toplayan, özel kurallarla alert üreten, Telegram bildirimi gönderen ve canlı React dashboard'u olan bir güvenlik izleme projesi.",
-    techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex", "Telegram Bot API", "Socket.IO", "Splunk"],
+    techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex", "Telegram Bot API", "Socket.IO", "Splunk", "Sigma"],
     status: "Devam Ediyor",
     repoUrl: "https://github.com/thousaba/wazuh-project",
-    readmeUrl: "/Wazuh.md"
+    readmeUrl: "/Sentryfy.md"
   },
   {
     id: 5,
@@ -62,7 +62,7 @@ export const projectsData: Project[] = [
     category: "Cybersecurity",
     description: "SignalParse is a CLI tool that streams Apache and Nginx access logs, parses them into structured events, and detects common web attacks (SQL Injection, XSS, brute force, path traversal) using a modular signature engine — all with constant memory usage, regardless of file size.",
     techStack: ["TypeScript", "Node.js", "Commander", "Regex"],
-    status: "Devam Ediyor",
+    status: "Tamamlandı",
     repoUrl: "https://github.com/thousaba/SignalParse",
     readmeUrl: "/SignalParse.md"
   },
