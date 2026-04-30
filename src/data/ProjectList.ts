@@ -66,5 +66,15 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/SignalParse",
     readmeUrl: "/SignalParse.md"
   },
+  {
+    id: 6,
+    title: "NetScanner",
+    category: "Cybersecurity",
+    description: "A lightweight, terminal-based local network discovery tool built with Python & Scapy. Finds devices on your LAN, identifies open ports, grabs service banners, guesses operating systems via TTL fingerprinting, and resolves vendor names from MAC addresses — all from a single command. ",
+    techStack: ["Python", "Scapy", "Rich"],
+    status: "Tamamlandı",
+    repoUrl: "https://github.com/thousaba/NetScanner",
+    readmeUrl: "/NetScanner.md"
+  },
   
 ];
