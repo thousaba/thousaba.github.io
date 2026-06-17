@@ -54,7 +54,7 @@ export const projectsData: Project[] = [
     techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex", "Telegram Bot API", "Socket.IO", "Splunk", "Sigma"],
     status: "Devam Ediyor",
     repoUrl: "https://github.com/thousaba/wazuh-project",
-    readmeUrl: "/Sentryfy.md"
+    readmeUrl: "/Sentryfy-docs.md"
   },
   {
     id: 5,
