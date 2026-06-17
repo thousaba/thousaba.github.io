@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Terminal, X } from 'lucide-react';
 
 interface ContentViewerProps {
@@ -28,7 +29,7 @@ export default function ContentViewer({ activeFile, content, onClose }: ContentV
 
       <div className="p-4 md:p-8 overflow-y-auto flex-1 custom-scrollbar">
         <div className="prose prose-invert prose-blue max-w-none">
-          <ReactMarkdown>{content}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
         </div>
       </div>
     </div>

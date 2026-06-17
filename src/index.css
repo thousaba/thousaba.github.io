@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 
 @custom-variant dark (&:is(.dark *));
@@ -122,4 +123,25 @@
   body {
     @apply bg-background text-foreground;
     }
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.prose thead tr {
+  background-color: rgb(30 41 59);
+}
+
+.prose th,
+.prose td {
+  border: 1px solid rgb(255 255 255 / 0.15);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.prose tbody tr:nth-child(even) {
+  background-color: rgb(255 255 255 / 0.03);
 }

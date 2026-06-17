@@ -76,5 +76,14 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/NetScanner",
     readmeUrl: "/NetScanner.md"
   },
-  
+  {
+    id: 7,
+    title: "Beacon Hunter",
+    category: "Cybersecurity",
+    description: "A PCAP analysis tool that automatically detects C2 (command-and-control) beacon candidates by measuring the jitter (coefficient of variation) of check-in intervals to external destinations.",
+    techStack: ["Python", "Scapy", "argparse"],
+    status: "Tamamlandı",
+    repoUrl: "https://github.com/thousaba/beacon_hunter",
+    readmeUrl: "/BeaconHunter.md"
+  },
 ];

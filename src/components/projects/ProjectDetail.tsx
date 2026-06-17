@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import type { Project } from './types';
 
 interface ProjectDetailProps {
@@ -77,6 +78,7 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
                 prose-hr:border-gray-700
                 prose-img:rounded-lg prose-img:border prose-img:border-gray-700">
                 <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
                   components={{
                     img: ({ src, alt }) => (
                       <img
