@@ -86,4 +86,14 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/beacon_hunter",
     readmeUrl: "/BeaconHunter.md"
   },
+  {
+    id: 8,
+    title: "Network Lab",
+    category: "Cybersecurity",
+    description: "Real-time Suricata IDS network traffic monitoring dashboard and threat alerting system integrated with Python, React, TypeScript, and Telegram Bot API ",
+    techStack: ["Suricata", "Splunk", "Zeek", "Python", "React", "TypeScript", "Telegram Bot API", "Socket.IO", "Wireshark", "Network"],
+    status: "Devam Ediyor",
+    repoUrl: "https://github.com/thousaba/network_lab",
+    readmeUrl: "/NetworkLab.md"
+  },
 ];
