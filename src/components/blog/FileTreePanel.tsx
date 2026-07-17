@@ -5,7 +5,7 @@ import {
 } from '@/components/animate-ui/primitives/radix/files';
 import {
   FolderOpenIcon, FolderIcon as LucideFolderIcon,
-  Film, Tv,
+  Film, FingerprintPattern
 } from 'lucide-react';
 import { FaSpotify } from 'react-icons/fa';
 import { SiLetterboxd } from 'react-icons/si';
@@ -26,7 +26,7 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
       </div>
 
       <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
-        <Files className="p-2" defaultOpen={['movies-dir', 'series-dir']}>
+        <Files className="p-2" defaultOpen={['movies-dir', 'docs-dir']}>
           <FilesHighlight className="bg-gray-950 rounded-md">
 
             {/* MOVIES */}
@@ -79,8 +79,8 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
               </div>
             </FolderItem>
 
-            {/* SERIES */}
-            <FolderItem value="series-dir">
+            {/* DOCS */}
+            <FolderItem value="docs-dir">
               <FolderHeader>
                 <FolderTrigger className="w-full text-start group mt-2 cursor-pointer">
                   <FolderHighlight>
@@ -89,7 +89,7 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                         closeIcon={<LucideFolderIcon className="size-5 text-purple-500" />}
                         openIcon={<FolderOpenIcon className="size-5 text-purple-400" />}
                       />
-                      <FileLabel className="text-lg font-semibold">Series</FileLabel>
+                      <FileLabel className="text-lg font-semibold">Docs</FileLabel>
                     </Folder>
                   </FolderHighlight>
                 </FolderTrigger>
@@ -98,15 +98,9 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
               <div className="relative ml-8 before:absolute before:-left-3 before:inset-y-0 before:w-px before:h-full before:bg-white/20">
                 <FolderContent>
                   <FileHighlight>
-                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('breaking-bad')}>
-                      <FileIcon><Tv className="size-4 text-slate-400" /></FileIcon>
-                      <FileLabel className="text-md">Breaking Bad.md</FileLabel>
-                    </File>
-                  </FileHighlight>
-                  <FileHighlight>
-                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('true-detective-s1')}>
-                      <FileIcon><Tv className="size-4 text-slate-400" /></FileIcon>
-                      <FileLabel className="text-md">True Detective S1.md</FileLabel>
+                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('T1078-Valid_Accounts')}>
+                      <FileIcon><FingerprintPattern className="size-4 text-slate-400" /></FileIcon>
+                      <FileLabel className="text-md">T1078 Valid Accounts</FileLabel>
                     </File>
                   </FileHighlight>
                 </FolderContent>
