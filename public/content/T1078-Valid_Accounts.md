@@ -26,7 +26,6 @@ service account / IdP / container).
 
 ---
 
-*Scoring reference points are fixed across all entries to keep scores comparable.*
 
 
 ### 💥 1. Impact ("Whoever Owns the Account, Owns the Power")

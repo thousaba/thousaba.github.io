@@ -103,6 +103,12 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                       <FileLabel className="text-md">T1078 Valid Accounts</FileLabel>
                     </File>
                   </FileHighlight>
+                  <FileHighlight>
+                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('T1091-Replication_Through_Removable_Media')}>
+                      <FileIcon><FingerprintPattern className="size-4 text-slate-400" /></FileIcon>
+                      <FileLabel className="text-md">T1091 Replication Through Removable Media</FileLabel>
+                    </File>
+                  </FileHighlight>
                 </FolderContent>
               </div>
             </FolderItem>
