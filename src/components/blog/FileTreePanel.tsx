@@ -109,6 +109,12 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                       <FileLabel className="text-md">T1091 Replication Through Removable Media</FileLabel>
                     </File>
                   </FileHighlight>
+                  <FileHighlight>
+                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('T1133-External_Remote_Services')}>
+                      <FileIcon><FingerprintPattern className="size-4 text-slate-400" /></FileIcon>
+                      <FileLabel className="text-md">T1133 External Remote Services</FileLabel>
+                    </File>
+                  </FileHighlight>
                 </FolderContent>
               </div>
             </FolderItem>
