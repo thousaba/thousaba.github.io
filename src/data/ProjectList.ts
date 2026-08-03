@@ -51,7 +51,7 @@ export const projectsData: Project[] = [
     title: "Sentryfy",
     category: "Cybersecurity",
     description: "Windows agent üzerinden Wazuh ile log toplayan, özel kurallarla alert üreten, Telegram bildirimi gönderen ve canlı React dashboard'u olan bir güvenlik izleme projesi.",
-    techStack: ["Wazuh", "React", "TypeScript", "Vite", "Axios", "Regex", "Telegram Bot API", "Socket.IO", "Splunk", "Sigma"],
+    techStack: ["Detection Engineering", "Log Analysis", "Splunk", "Sentinel", "React", "TypeScript", "Windows", "Regex",],
     status: "Devam Ediyor",
     repoUrl: "https://github.com/thousaba/wazuh-project",
     readmeUrl: "/Sentryfy-docs.md"
@@ -91,9 +91,19 @@ export const projectsData: Project[] = [
     title: "Network Lab",
     category: "Cybersecurity",
     description: "Real-time Suricata IDS network traffic monitoring dashboard and threat alerting system integrated with Python, React, TypeScript, and Telegram Bot API ",
-    techStack: ["Suricata", "Splunk", "Zeek", "Python", "React", "TypeScript", "Telegram Bot API", "Socket.IO", "Wireshark", "Network"],
+    techStack: ["Suricata", "Splunk", "Zeek", "Python", "React", "TypeScript", "Wireshark", "Network"],
     status: "Devam Ediyor",
     repoUrl: "https://github.com/thousaba/network_lab",
     readmeUrl: "/NetworkLab.md"
+  },
+  {
+    id: 9,
+    title: "Windows Event Normalizer",
+    category: "Cybersecurity",
+    description: "Normalizes Windows Security & Sysmon events (EVTX) into Microsoft Defender and ASIM schemas — driven by declarative JSON mappings, not code ",
+    techStack: ["Python", "EVTX", "JSON", "Regex", "SPL", "KQL", "ASIM"],
+    status: "Tamamlandı",
+    repoUrl: "https://github.com/thousaba/windows-event-normalizer",
+    readmeUrl: "/WindowsEventNormalizer.md"
   },
 ];

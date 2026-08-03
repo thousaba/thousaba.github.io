@@ -3,6 +3,7 @@ import { BlogSkeleton } from '../components/Skeleton';
 import DecryptedText from '../components/DecryptedText';
 import FileTreePanel from '../components/blog/FileTreePanel';
 import ContentViewer from '../components/blog/ContentViewer';
+import { postDates } from '../data/posts';
 
 export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +57,7 @@ export default function Blog() {
           <ContentViewer
             activeFile={activeFile}
             content={content}
+            date={postDates[activeFile]}
             onClose={handleClose}
           />
         )}
