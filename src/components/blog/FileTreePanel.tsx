@@ -121,6 +121,12 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                       <FileLabel className="text-md">T1189 Drive by Compromise</FileLabel>
                     </File>
                   </FileHighlight>
+                  <FileHighlight>
+                    <File className="flex items-center gap-2 p-2 cursor-pointer hover:text-purple-300 transition-colors" onClick={() => onFileClick('T1190-Exploit_Public-Facing_Application')}>
+                      <FileIcon><FingerprintPattern className="size-4 text-slate-400" /></FileIcon>
+                      <FileLabel className="text-md">T1190 Exploit Public-Facing Application</FileLabel>
+                    </File>
+                  </FileHighlight>
                 </FolderContent>
               </div>
             </FolderItem>

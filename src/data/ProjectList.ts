@@ -106,4 +106,14 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/windows-event-normalizer",
     readmeUrl: "/WindowsEventNormalizer.md"
   },
+  {
+    id: 10,
+    title: "Windows API Lab",
+    category: "Cybersecurity",
+    description: "Hands-on Windows API labs exploring process handles, access rights, virtual memory, and Windows internals from a detection engineering perspective.",
+    techStack: ["C", "Windows", "Windows API", "Windows Internals"],
+    status: "Devam Ediyor",
+    repoUrl: "https://github.com/thousaba/windows_api_lab",
+    readmeUrl: "/windows_api_lab.md"
+  },
 ];

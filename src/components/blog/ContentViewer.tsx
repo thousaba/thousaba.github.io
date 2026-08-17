@@ -11,7 +11,7 @@ interface ContentViewerProps {
 
 export default function ContentViewer({ activeFile, content, date, onClose }: ContentViewerProps) {
   const formattedDate = date
-    ? new Date(date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
+    ? new Date(date).toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' })
     : null;
 
   return (
