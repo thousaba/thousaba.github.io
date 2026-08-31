@@ -116,4 +116,14 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/windows_api_lab",
     readmeUrl: "/windows_api_lab.md"
   },
+  {
+    id: 11,
+    title: "WAF Detection Lab",
+    category: "Cybersecurity",
+    description: "WAF (ModSecurity+CRS) + Splunk detection lab against a deliberately vulnerable internal app — coverage testing, blind-spot analysis, and alerting.",
+    techStack: ["Python", "Network Security", "Burp Suite", "WAF","CRS","ModSecurity", "SQL Injection", "XSS", "Path Traversal","IDOR","Splunk","Flask"],
+    status: "Devam Ediyor",
+    repoUrl: "https://github.com/thousaba/waf_detection_lab",
+    readmeUrl: "/waf-detection-lab.md"
+  },
 ];
