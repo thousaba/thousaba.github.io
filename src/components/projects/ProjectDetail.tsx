@@ -46,10 +46,19 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
             </div>
             <div className="flex gap-3 mt-2 lg:mt-0">
               {project.downloadUrl && (
-                <a href={project.downloadUrl} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-emerald-500/20 active:scale-95">
-                  <span>APK İndir</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-                </a>
+                <div className="flex flex-col items-start gap-1.5">
+                  <a href={project.downloadUrl} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-emerald-500/20 active:scale-95">
+                    <span>APK İndir</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                  </a>
+                  {project.title === "Football Card" && (
+                    <img
+                      src="https://img.shields.io/github/downloads/thousaba/FootballCard/v1.0.0/app-release.apk?style=flat-square&label=download&color=10b981"
+                      alt="APK indirme sayısı"
+                      className="h-5"
+                    />
+                  )}
+                </div>
               )}
               {project.repoUrl && (
                 <a href={project.repoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg font-bold border border-gray-700 transition-all active:scale-95">
@@ -62,6 +71,20 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
           <hr className="border-gray-800 mb-6 shrink-0" />
 
           <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+            {/* Tech Stack */}
+            <div className="mb-8">
+              <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
+                Kullanılan Teknolojiler
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {project.techStack.map((tech) => (
+                  <span key={tech} className="px-3 py-1 bg-gray-800 text-emerald-400 rounded border border-gray-700 text-sm font-bold font-mono">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
               {project.description}
             </p>
@@ -123,20 +146,6 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
                 </div>
               </div>
             )}
-
-            {/* Tech Stack */}
-            <div className="mt-auto pb-4">
-              <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
-                Kullanılan Teknolojiler
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
-                  <span key={tech} className="px-3 py-1 bg-gray-800 text-emerald-400 rounded border border-gray-700 text-sm font-bold font-mono">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
 
         </div>
