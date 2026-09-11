@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
-import Aurora from './components/Aurora'; 
+//import Aurora from './components/Aurora'; 
+import MagicRings from './components/MagicRings';
 import HomePage from './pages/HomePage'; 
 import Contact from './pages/Contact';
 import Projects from './pages/Projects';
@@ -38,7 +39,7 @@ function App() {
     <HashRouter>
       <div className="relative w-screen h-screen overflow-hidden">        
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Aurora />
+          <MagicRings />
         </div>
         <div className="absolute top-4 left-4 md:top-8 md:left-8 z-60">
           <Link to="/" className="flex flex-row items-center gap-2 md:gap-4 group cursor-pointer">
