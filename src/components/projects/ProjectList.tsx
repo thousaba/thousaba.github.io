@@ -14,7 +14,7 @@ export default function ProjectList({ projects, selectedId, onSelect }: ProjectL
 
   const handlePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || e.button !== 0) return;
     // Clicks landing in (or near) the native scrollbar track/thumb are outside
     // clientWidth (which excludes the scrollbar) — let the browser handle those
     // natively. The scrollbar is thin, so add a small buffer for near-misses;
@@ -23,26 +23,28 @@ export default function ProjectList({ projects, selectedId, onSelect }: ProjectL
     const SCROLLBAR_EDGE_BUFFER = 12;
     const rect = el.getBoundingClientRect();
     if (e.clientX - rect.left > el.clientWidth - SCROLLBAR_EDGE_BUFFER) return;
+
     dragRef.current.isDown = true;
     dragRef.current.moved = false;
     dragRef.current.startY = e.clientY;
     dragRef.current.startScrollTop = el.scrollTop;
-    el.setPointerCapture(e.pointerId);
-  };
 
-  const handlePointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    const el = scrollRef.current;
-    const drag = dragRef.current;
-    if (!el || !drag.isDown) return;
-    const delta = e.clientY - drag.startY;
-    if (Math.abs(delta) > 5) drag.moved = true;
-    el.scrollTop = drag.startScrollTop - delta;
-  };
-
-  const handlePointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
-    const el = scrollRef.current;
-    dragRef.current.isDown = false;
-    if (el && el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+    // Track the drag on the window instead of using setPointerCapture — capturing
+    // the pointer on this element re-targets the resulting "click" event to it,
+    // which stops the project buttons' onClick from ever firing.
+    const handleMove = (ev: PointerEvent) => {
+      if (!dragRef.current.isDown) return;
+      const delta = ev.clientY - dragRef.current.startY;
+      if (Math.abs(delta) > 5) dragRef.current.moved = true;
+      el.scrollTop = dragRef.current.startScrollTop - delta;
+    };
+    const handleUp = () => {
+      dragRef.current.isDown = false;
+      window.removeEventListener('pointermove', handleMove);
+      window.removeEventListener('pointerup', handleUp);
+    };
+    window.addEventListener('pointermove', handleMove);
+    window.addEventListener('pointerup', handleUp);
   };
 
   const handleClickCapture = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -62,9 +64,6 @@ export default function ProjectList({ projects, selectedId, onSelect }: ProjectL
       <div
         ref={scrollRef}
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
         onClickCapture={handleClickCapture}
         className="flex flex-col gap-3 overflow-y-auto pr-1 md:max-h-200 md:cursor-grab md:active:cursor-grabbing select-none [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full"
       >
