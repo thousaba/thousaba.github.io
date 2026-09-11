@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import type { PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent } from 'react';
 import type { Project } from './types';
 
 interface ProjectListProps {
@@ -7,13 +9,65 @@ interface ProjectListProps {
 }
 
 export default function ProjectList({ projects, selectedId, onSelect }: ProjectListProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef({ isDown: false, startY: 0, startScrollTop: 0, moved: false });
+
+  const handlePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Clicks landing in (or near) the native scrollbar track/thumb are outside
+    // clientWidth (which excludes the scrollbar) — let the browser handle those
+    // natively. The scrollbar is thin, so add a small buffer for near-misses;
+    // our drag-to-scroll uses an inverted "grab" direction that fights the
+    // scrollbar's direct direction if it accidentally takes over here.
+    const SCROLLBAR_EDGE_BUFFER = 12;
+    const rect = el.getBoundingClientRect();
+    if (e.clientX - rect.left > el.clientWidth - SCROLLBAR_EDGE_BUFFER) return;
+    dragRef.current.isDown = true;
+    dragRef.current.moved = false;
+    dragRef.current.startY = e.clientY;
+    dragRef.current.startScrollTop = el.scrollTop;
+    el.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = scrollRef.current;
+    const drag = dragRef.current;
+    if (!el || !drag.isDown) return;
+    const delta = e.clientY - drag.startY;
+    if (Math.abs(delta) > 5) drag.moved = true;
+    el.scrollTop = drag.startScrollTop - delta;
+  };
+
+  const handlePointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = scrollRef.current;
+    dragRef.current.isDown = false;
+    if (el && el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+  };
+
+  const handleClickCapture = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (dragRef.current.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragRef.current.moved = false;
+    }
+  };
+
   return (
     <div className="w-full md:w-1/3 flex flex-col gap-4">
       <h2 className="text-xl md:text-2xl font-bold text-white mb-2 px-2 border-l-4 border-emerald-500">
         Projelerim
       </h2>
 
-      <div className="flex flex-col gap-3">
+      <div
+        ref={scrollRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        onClickCapture={handleClickCapture}
+        className="flex flex-col gap-3 overflow-y-auto pr-1 md:max-h-200 md:cursor-grab md:active:cursor-grabbing select-none [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full"
+      >
         {projects.map((project) => (
           <button
             key={project.id}
