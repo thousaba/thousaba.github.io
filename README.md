@@ -1,5 +1,5 @@
-![Screenshot 1](public/ReadMe/screenshot-1.png)
+![Screenshot 1](public/ReadMe/ss-1.png)
 
-![Screenshot 2](public/ReadMe/screenshot-2.png)
+![Screenshot 2](public/ReadMe/ss-2.png)
 
-![Screenshot 3](public/ReadMe/screenshot-3.png)
+![Screenshot 3](public/ReadMe/ss-3.png)
