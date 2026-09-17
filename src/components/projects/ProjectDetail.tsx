@@ -36,8 +36,8 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
                   {project.category}
                 </span>
                 <span className={`px-2 py-1 rounded text-xs font-bold border uppercase tracking-wider
-                  ${project.status === 'Devam Ediyor' ? 'bg-yellow-900/20 text-yellow-500 border-yellow-900/50' :
-                    project.status === 'Tamamlandı' ? 'bg-blue-900/20 text-blue-400 border-blue-900/50' :
+                  ${project.status === 'In Progress' ? 'bg-yellow-900/20 text-yellow-500 border-yellow-900/50' :
+                    project.status === 'Completed' ? 'bg-blue-900/20 text-blue-400 border-blue-900/50' :
                     'bg-gray-800 text-gray-400 border-gray-700'}
                 `}>
                   {project.status}

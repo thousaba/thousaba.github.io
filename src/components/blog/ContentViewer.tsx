@@ -11,7 +11,7 @@ interface ContentViewerProps {
 
 export default function ContentViewer({ activeFile, content, date, onClose }: ContentViewerProps) {
   const formattedDate = date
-    ? new Date(date).toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    ? new Date(date).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })
     : null;
 
   return (
@@ -26,7 +26,7 @@ export default function ContentViewer({ activeFile, content, date, onClose }: Co
         <button
           onClick={onClose}
           className="p-1 rounded-md hover:bg-white/10 text-slate-400 hover:text-red-400 transition-all cursor-pointer"
-          title="Terminali Kapat"
+          title="Close Terminal"
         >
           <X className="size-5" />
         </button>
@@ -35,7 +35,7 @@ export default function ContentViewer({ activeFile, content, date, onClose }: Co
       {formattedDate && (
         <div className="w-full px-4 md:px-8 pt-4 flex items-center gap-2 text-xs font-mono text-slate-400 shrink-0">
           <CalendarDays className="size-3.5" />
-          <span>Eklenme tarihi: {formattedDate}</span>
+          <span>Added on: {formattedDate}</span>
         </div>
       )}
 

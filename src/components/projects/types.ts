@@ -4,7 +4,7 @@ export interface Project {
   category: string;
   description: string;
   techStack: string[];
-  status: 'Tamamlandı' | 'Devam Ediyor' | 'Plan Aşamasında';
+  status: 'Completed' | 'In Progress' | 'Planned';
   images?: string[];
   downloadUrl?: string;
   repoUrl?: string;

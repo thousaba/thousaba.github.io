@@ -55,7 +55,7 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                   >
                     <SiLetterboxd className="size-7 text-blue-500" />
                     <span className="flex-text-md font-medium tracking-wide">
-                      Letterboxd Profilim
+                      My Letterboxd Profile
                     </span>
                   </a>
                 </FileHighlight>
@@ -158,7 +158,7 @@ export default function FileTreePanel({ activeFile, onFileClick }: FileTreePanel
                     >
                       <FaSpotify className="size-7 text-green-500" />
                       <span className="flex-text-md font-medium tracking-wide">
-                        Spotify Profilim
+                        My Spotify Profile
                       </span>
                     </a>
                   </FileHighlight>

@@ -58,7 +58,7 @@ export default function ProjectList({ projects, selectedId, onSelect }: ProjectL
   return (
     <div className="w-full md:w-1/3 flex flex-col gap-4">
       <h2 className="text-xl md:text-2xl font-bold text-white mb-2 px-2 border-l-4 border-emerald-500">
-        Projelerim
+        Projects
       </h2>
 
       <div
