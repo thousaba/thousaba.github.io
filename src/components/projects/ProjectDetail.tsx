@@ -48,13 +48,13 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
               {project.downloadUrl && (
                 <div className="flex flex-col items-start gap-1.5">
                   <a href={project.downloadUrl} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-emerald-500/20 active:scale-95">
-                    <span>APK İndir</span>
+                    <span>Download APK</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
                   </a>
                   {project.title === "Football Card" && (
                     <img
                       src="https://img.shields.io/github/downloads/thousaba/FootballCard/v1.0.0/app-release.apk?style=flat-square&label=download&color=10b981"
-                      alt="APK indirme sayısı"
+                      alt="APK download count"
                       className="h-5"
                     />
                   )}
@@ -74,7 +74,7 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
             {/* Tech Stack */}
             <div className="mb-8">
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
-                Kullanılan Teknolojiler
+                Tech Stack
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
@@ -122,7 +122,7 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
             {/* Galeri */}
             {project.images && project.images.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Ekran Görüntüleri</h3>
+                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Screenshots</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {project.images.map((img, index) => (
                     <button

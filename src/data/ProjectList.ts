@@ -111,7 +111,7 @@ export const projectsData: Project[] = [
     title: "Windows API Lab",
     category: "Cybersecurity",
     description: "Hands-on Windows API labs exploring process handles, access rights, virtual memory, and Windows internals from a detection engineering perspective.",
-    techStack: ["C", "Windows", "Windows API", "Windows Internals"],
+    techStack: ["C", "Windows API", "Windows Internals", "Malware Analysis",  "Assembly", "x64dbg", "Reverse Engineering"],
     status: "In Progress",
     repoUrl: "https://github.com/thousaba/windows_api_lab",
     readmeUrl: "/windows_api_lab.md"
