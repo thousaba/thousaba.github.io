@@ -2,15 +2,17 @@
 
 A small, dependency-free C tool for the first pass of static PE (Windows executable) triage. [pe-info-parser.c](pe-info-parser.c) is a single file that parses the PE structures by hand — no `windows.h`, no third-party libraries — so it builds with any C99 compiler on Windows or Linux.
 
-It dumps the File Header, Section Table, Optional Header (mitigations, entry point), Data Directories, the Export Table (EAT) and the Import Table, and flags common packer / injector indicators along the way.
+It dumps the File Header, Section Table (with per-section entropy and RWX flags), Optional Header (mitigations, entry point), Data Directories, the Export Table (EAT), a composite anomaly verdict, and the Import Table, flagging common packer / injector indicators along the way.
 
 ## Build
 
 ```sh
-gcc -O2 -o pe-info-parser.exe pe-info-parser.c
+gcc -O2 -o pe-info-parser.exe pe-info-parser.c        # MinGW / MSVC-free Windows build
+gcc -O2 -o pe-info-parser pe-info-parser.c -lm        # Linux (libm needed for log())
+cl /O2 pe-info-parser.c                               # MSVC
 ```
 
-Tested with MinGW-W64 GCC on Windows. MSVC (`cl /O2 pe-info-parser.c`) and Linux GCC/Clang should work as well; the only platform-specific bit is `_stricmp`/`strcasecmp`, which is handled by an `#ifdef`.
+Tested with MinGW-W64 GCC and MSVC on Windows. The only platform-specific bit is `_stricmp`/`strcasecmp`, which is handled by an `#ifdef`.
 
 ## Usage
 
@@ -20,42 +22,77 @@ pe-info-parser.exe <target_exe>
 
 Walks `DOS_HEADER → PE signature → FILE_HEADER → OPTIONAL_HEADER64 → SECTION_HEADER[]`, then follows the Export and Import Directories through the section table with a manual RVA→file-offset translation. All offsets are bounds-checked against the file size, so a truncated or hand-crafted header produces an error instead of a crash or an infinite loop.
 
-The report has six blocks.
+Before printing anything past the file header, the tool does one silent pass over the sections and headers to compute a composite anomaly verdict — see block 2. That verdict is what a reader sees first, and it also decides how block 7 (Imports) filters `KERNEL32.dll`.
+
+The report has seven blocks.
 
 **1. File header**
 
 ```
 > pe-info-parser.exe sample.exe
-======================================================================
-PE-INFO PARSER: sample.exe
-======================================================================
++====================================================================+
+|                                                                    |
+|                           PE-INFO PARSER                          |
+|                Static PE Triage & Anomaly Analysis                |
+|                                                                    |
++====================================================================+
+Target File             : sample.exe
 Machine                 : 0x8664 -> x64 (AMD64)
 Number of Sections      : 18
 Compilation Date (Stamp): 2026-09-10 19:40:58 UTC
 Optional Header Size    : 240 Byte
 Characteristics         : 0x0026 [ EXE LARGE_ADDRESS_AWARE ]
+======================================================================
 ```
+
+The boxed masthead is fixed branding — the same 70 characters wide as every other separator in the report, drawn by `print_banner_border()`/`print_banner_line()` so it's unmistakably the report's title rather than another data line. Everything under it (`Target File` onward) is per-run data in the same plain `key : value` style as the rest of the tool.
 
 - **Machine** is decoded for x86 / x64 / ARM64.
 - **Compilation Date** is the `TimeDateStamp` rendered in UTC. Remember this field is trivially forgeable.
 - **Characteristics** decodes `EXE`, `DLL`, `LARGE_ADDRESS_AWARE`, `RELOCS_STRIPPED`, `SYSTEM_DRIVER`.
 
-**2. Section table**
+**2. Anomaly summary**
 
 ```
-SECTION NAME VIRT_SIZE    VIRT_ADDR(RVA) RAW_OFFSET   PERMISSIONS
+======================================================================
+PE TRIAGE ANOMALY SUMMARY
+======================================================================
+High Entropy Section (>7.5) : YES
+RWX Section Present          : YES
+Entry Point Anomaly          : no
+TLS Callback Present         : no
 ----------------------------------------------------------------------
-.text      0x00003450   0x00001000     0x00000600   0x60000020
-.data      0x000000C0   0x00005000     0x00003C00   0xC0000040
-.rdata     0x00001408   0x00006000     0x00003E00   0x40000040
-.idata     0x00000AD0   0x0000C000     0x00005E00   0x40000040
-.tls       0x00000010   0x0000D000     0x00006A00   0xC0000040
-...
+Verdict: [!] SUSPICIOUS -> KERNEL32 baseline suppression DISABLED, every import shown below.
 ```
 
-**PERMISSIONS** is the raw section `Characteristics` DWORD (`0x20000000` execute, `0x40000000` read, `0x80000000` write). A writable+executable section is worth a second look.
+Four independent signals, computed silently over the sections and headers below before anything else is printed, are combined into one verdict: a section above **7.5** entropy, an RWX section, an entry point outside `.text` (or unresolvable), and a present TLS directory. If **any** of them fires, the binary is treated as already flagged — and that changes how block 7 (Imports) behaves.
 
-**3. Optional header & mitigations**
+This exists because of a real blind spot: the `[~] CRT Baseline` noise filter in the imports block was designed to hide APIs like `GetProcAddress` and `VirtualProtect` when they're just normal CRT startup plumbing. But those two APIs are also exactly what a packer's unpacking stub calls to resolve and re-protect its decompressed payload — so on a genuinely suspicious binary, the same filter that reduces noise on clean binaries was hiding the clearest evidence. This verdict is the gate: noise suppression only applies to binaries with no other red flag. It leads the report, ahead of the section/header detail that produced it, so you see the verdict before you have to read the evidence for it.
+
+**3. Section table**
+
+```
+SECTION NAME VIRT_SIZE    VIRT_ADDR(RVA) RAW_OFFSET   PERMISSIONS  ENTROPY
+----------------------------------------------------------------------
+.text      0x000042B0   0x00001000     0x00000600   0x60000020   5.50
+.data      0x000000C0   0x00006000     0x00004A00   0xC0000040   0.64
+.rdata     0x000015C8   0x00007000     0x00004C00   0x40000040   5.25
+.bss       0x000001A0   0x0000C000     0x00000000   0xC0000080   0.00
+.idata     0x00000AD0   0x0000D000     0x00006C00   0x40000040   3.71
+.rsrc      0x000001E0   0x0000F000     0x00007A00   0x40000040   4.84
+UPX1       0x00012000   0x00007000     0x00000400   0xE0000040   7.91  [!] HIGH (Packed / Encrypted?)  [!] RWX (Write+Execute)
+...
+[!] WARNING: At least one section is Read+Write+Execute! (Self-modifying / unpacking-stub pattern)
+```
+
+(The `UPX1` line is illustrative — it shows what a packed, self-unpacking section looks like next to the ordinary ones.)
+
+- **PERMISSIONS** is the raw section `Characteristics` DWORD (`0x20000000` execute, `0x40000000` read, `0x80000000` write). A section that is **both** writable and executable (RWX) gets its own `[!] RWX` marker plus a summary warning line after the table — normal compilers never emit RWX sections, but a stub that decompresses its own payload and then jumps into it needs exactly that.
+- **ENTROPY** is the Shannon entropy (0.0–8.0 bits/byte) of the section's raw bytes on disk. Native x64 code lands around 5–6.5, tables and string data lower. Anything above **7.0** gets a `[!] HIGH` marker on that row: compressed or encrypted content, i.e. a packer stub's payload section, an embedded encrypted blob, or a `.rsrc` hiding a second stage. Sections with no raw data (`.bss`, `PointerToRawData == 0`) report `0.00`.
+
+Note the entropy threshold here (**7.0**, per-row) is slightly lower than the composite verdict's threshold (**7.5**, block 2) — one moderately compressed section is worth a row marker without necessarily flipping the whole binary's verdict on its own; the two thresholds are intentionally different bars.
+
+**4. Optional header & mitigations**
 
 ```
 ======================================================================
@@ -79,7 +116,7 @@ DllCharacteristics      : 0x0160
 - **FileAlignment == SectionAlignment** is flagged as a warning. Normal linkers use `0x200` / `0x1000`; equal values are typical of packed images and manually built shellcode loaders.
 - **DllCharacteristics** is broken out into ASLR, DEP, high-entropy VA, CFG and Terminal Server awareness. A disabled ASLR or DEP gets a `[!]` marker.
 
-**4. Data directories**
+**5. Data directories**
 
 ```
 ======================================================================
@@ -101,7 +138,7 @@ Only the triage-relevant indexes are listed (export, import, resource, security,
 - **TLS present** → TLS callbacks run before the entry point, a classic anti-debug / early-execution spot. Note that MinGW-built binaries (like the sample above) legitimately carry a TLS directory, so treat this as "look here", not "malicious".
 - **RESOURCE larger than 64 KiB** → possible embedded payload (droppers commonly stash the second stage in `.rsrc`).
 
-**5. Exports**
+**6. Exports**
 
 ```
 ======================================================================
@@ -131,7 +168,7 @@ Reads `IMAGE_EXPORT_DIRECTORY` (index 0 of the data directories) and walks the t
 - **FOFFSET** is the function's raw file offset after RVA translation. An RVA that cannot be mapped to any section prints as `0xFFFFFFFF`.
 - Output is capped at the first 15 named exports; the remaining count is reported so you know when to open the file in a proper disassembler. A file without an export directory (most `.exe`s) prints a single `[-] No Export Directory Found` line.
 
-**6. Imports**
+**7. Imports**
 
 ```
 ======================================================================
@@ -151,13 +188,15 @@ IMPORTS (STATIC DLLs and CRITICAL APIs)
     |-- API: malloc
 ```
 
-For `KERNEL32.dll` the import list is filtered to cut noise:
+For `KERNEL32.dll` the import list is filtered to cut noise — **but only when block 2's verdict is clean**:
 
-- `[!] CRITICAL API` — process/memory-manipulation APIs commonly seen in loaders, injectors and droppers (`VirtualAlloc[Ex]`, `WriteProcessMemory`, `CreateRemoteThread`, `OpenProcess`, `CreateProcess*`, `WinExec`, `LoadLibrary[A|W]`, …).
-- `[~] CRT Baseline` — APIs almost every MSVC/MinGW CRT pulls in (`GetProcAddress`, `VirtualProtect`, `LoadLibraryExW`, `InitializeSListHead`, `SetUnhandledExceptionFilter`). Shown so you can tell "the CRT did it" from "the author did it".
-- Everything else from `KERNEL32` is collapsed into a `(... N hidden KERNEL32 APIs)` count.
+- `[!] CRITICAL API` — process/memory-manipulation APIs commonly seen in loaders, injectors and droppers (`VirtualAlloc[Ex]`, `WriteProcessMemory`, `CreateRemoteThread`, `OpenProcess`, `CreateProcess*`, `WinExec`, `LoadLibrary[A|W]`, …). Always shown, regardless of verdict.
+- `[~] CRT Baseline` — APIs almost every MSVC/MinGW CRT pulls in (`GetProcAddress`, `VirtualProtect`, `LoadLibraryExW`, `InitializeSListHead`, `SetUnhandledExceptionFilter`). Shown so you can tell "the CRT did it" from "the author did it". **Only applied when the anomaly verdict is clean.**
+- Everything else from `KERNEL32` is collapsed into a `(... N hidden KERNEL32 APIs)` count — again, **only when clean**.
 
-Imports from every other DLL are listed in full. Ordinal-only imports are printed as `Ordinal: N`.
+If the anomaly verdict is `SUSPICIOUS`, none of that filtering happens: every KERNEL32 import is printed individually, tagged `[?] API (baseline suppression disabled - binary flagged)` — including `GetProcAddress` and `VirtualProtect`, which would otherwise be downgraded to `[~] CRT Baseline` and lost in the noise. `[!] CRITICAL API` entries keep their own marker either way.
+
+Imports from every other DLL are always listed in full. Ordinal-only imports are printed as `Ordinal: N`.
 
 ## Limitations
 
@@ -165,6 +204,7 @@ Imports from every other DLL are listed in full. Ordinal-only imports are printe
 - The import walker handles the classic Import Directory only. Delay-load imports and the load config are reported as present/absent in the data directory block but not parsed.
 - The export walker lists **named** exports only (the first 15). Ordinal-only exports (`Total Functions > Named Functions`) are counted but not listed, and forwarded exports (`KERNEL32.HeapAlloc`-style strings in place of code) are printed with their RVA as if they were code.
 - Section names are truncated at 8 bytes as stored in the header; long names via the string table (`/4`, `/14`, … in GCC-built binaries) are not resolved.
+- The anomaly verdict is a simple OR of four signals, not a scored/weighted model. One high-entropy `.rsrc` (a legitimately compressed icon or embedded ZIP) is enough to flip it to `SUSPICIOUS` and disable KERNEL32 suppression, same as an actual RWX unpacking stub would. Treat the verdict as "look closer here", not "confirmed malicious" — same spirit as the individual `[!]` markers.
 - The `[!]` markers are heuristics for prioritising what to look at next, not verdicts. Legitimate software trips several of them (see the TLS note above).
 
 Compiled `.exe` files are ignored via `.gitignore`; rebuild from source with the command above.
