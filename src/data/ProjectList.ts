@@ -50,7 +50,7 @@ export const projectsData: Project[] = [
     id: 4,
     title: "Sentryfy",
     category: "Cybersecurity",
-    description: "Windows agent üzerinden Wazuh ile log toplayan, özel kurallarla alert üreten, Telegram bildirimi gönderen ve canlı React dashboard'u olan bir güvenlik izleme projesi.",
+    description: "Detection engineering lab: MITRE ATT&CK detections built and validated on real telemetry across Splunk (RBA) and Microsoft Sentinel (KQL), with writeups.",
     techStack: ["Detection Engineering", "Log Analysis", "Splunk", "Sentinel", "React", "TypeScript", "Windows", "Regex",],
     status: "In Progress",
     repoUrl: "https://github.com/thousaba/wazuh-project",
@@ -132,7 +132,7 @@ export const projectsData: Project[] = [
     category: "Cybersecurity",
     description: "A small, dependency-free C tool for the first pass of static PE (Windows executable) triage. pe-info-parser.c is a single file that parses the PE structures by hand — no windows.h, no third-party libraries — so it builds with any C99 compiler on Windows or Linux",
     techStack: ["C", "Binary Analysis", "Malware Analysis", "PE Parser", "PE Analysis", "Reverse Engineering"],
-    status: "In Progress",
+    status: "Completed",
     repoUrl: "https://github.com/thousaba/pe-info-parser",
     readmeUrl: "/pe-info-parser.md"
   },
