@@ -136,4 +136,14 @@ export const projectsData: Project[] = [
     repoUrl: "https://github.com/thousaba/pe-info-parser",
     readmeUrl: "/pe-info-parser.md"
   },
+  {
+    id: 13,
+    title: "Security Team Dashboard",
+    category: "Web Development",
+    description: "Security team management panel built with Laravel API and React: role-based access, user management, notifications and real-time group chat (Laravel Reverb WebSockets).",
+    techStack: ["PHP", "Laravel", "React", "JavaScript", "Laravel-Reverb", "WebSocket", "PostgreSQL", "CSS", "Artisan"],
+    status: "In Progress",
+    repoUrl: "https://github.com/thousaba/security-team-dashboard",
+    readmeUrl: "/sec-team-dashboard.md"
+  },
 ];
