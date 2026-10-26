@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Project } from './types';
@@ -71,15 +71,15 @@ export default function ProjectDetail({ project, onImageClick }: ProjectDetailPr
           <hr className="border-gray-800 mb-6 shrink-0" />
 
           <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-            {/* Tech Stack */}
+            {/* Topics */}
             <div className="mb-8">
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
-                Tech Stack
+                Topics
               </h3>
               <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
-                  <span key={tech} className="px-3 py-1 bg-gray-800 text-emerald-400 rounded border border-gray-700 text-sm font-bold font-mono">
-                    {tech}
+                {project.topics.map((topic) => (
+                  <span key={topic} className="px-3 py-1 bg-gray-800 text-emerald-400 rounded border border-gray-700 text-sm font-bold font-mono">
+                    {topic}
                   </span>
                 ))}
               </div>

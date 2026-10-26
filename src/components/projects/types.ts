@@ -1,9 +1,9 @@
-export interface Project {
+﻿export interface Project {
   id: number;
   title: string;
   category: string;
   description: string;
-  techStack: string[];
+  topics: string[];
   status: 'Completed' | 'In Progress' | 'Planned';
   images?: string[];
   downloadUrl?: string;
