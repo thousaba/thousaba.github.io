@@ -1,63 +1,161 @@
-# Beacon Hunter
+# beacon-hunter
 
-A PCAP analysis tool that automatically detects C2 (command-and-control) beacon candidates by measuring the jitter (coefficient of variation) of check-in intervals to external destinations.
+`beacon-hunter` is an offline PCAP/PCAPNG analysis prototype that ranks network traffic patterns for review. It looks for repeated timing and payload-size patterns that can occur in C2 beaconing. A result is a **heuristic investigation lead**, not proof of malware or a calibrated probability.
 
-## How it works
 
-1. Counts all external (public, non-private) destination IPs seen in the capture — these become beacon candidates.
-2. Groups packets to each candidate into "check-in events," merging sub-second bursts into a single event.
-3. Computes the coefficient of variation (CV) of the intervals between events — this is the jitter.
-4. Flags a destination as a beacon suspect when the jitter is low, the average interval is reasonable, and there are enough check-ins.
+## What it currently does
 
-Low jitter combined with a regular interval is a strong indicator of an automated beacon rather than normal human-driven traffic.
+- Reads saved PCAP/PCAPNG files with Scapy; it does not capture live traffic.
+- Extracts IPv4/IPv6 packets carrying TCP or UDP.
+- By default, analyzes packets whose destination IP is classified as external.
+- Groups packets by **source IP, destination IP, transport protocol, and destination port**. The source port is intentionally omitted so repeat TCP connections using new ephemeral source ports stay together.
+- Scores event timing, repeated payload sizes, payload smallness, and event count.
+- Reports DNS query/response context when Scapy recognizes DNS packets. Recognized DNS packets are excluded from generic beacon scoring.
+- Labels some IPv4 addresses ending in `.1`, `.254`, or `.255` as possible infrastructure addresses and applies a cadence-based routing-shadow heuristic.
+
+The grouping key is a service-family heuristic, not a reconstructed TCP session or a full 5-tuple. Different applications using the same source host and remote service can be merged.
+
+## Installation
+
+```bash
+python -m venv venv
+
+# Windows PowerShell
+.\venv\Scripts\Activate.ps1
+
+# macOS / Linux
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+`requirements.txt` currently contains Scapy.
 
 ## Usage
 
-```bash
-python beacon-hunter.py <pcap_file>
-```
-
-## Screenshots
-![text](/BeaconHunter/beacon-hunter-1.png)
-![text](/BeaconHunter/beacon-hunter-2.png)
-![text](/BeaconHunter/beacon-hunter-3.png)
-
-### Options
-
-| Flag | Description | Default |
-|---|---|---|
-| `--syn-only` | Only count TCP SYN packets (each new connection = one check-in) | off |
-| `--min-gap` | Burst-merge threshold in seconds | `1.0` |
-| `--top` | Number of external candidates to display | `15` |
-| `--include-internal` | Also include internal IPs as candidates | off |
-
-### Examples
-
-```bash
+```powershell
+# Analyze public/external destination candidates
 python beacon-hunter.py capture.pcap
-python beacon-hunter.py capture.pcap --syn-only --min-gap 1.0
-python beacon-hunter.py capture.pcap --include-internal --top 25
+
+# Include internal destination IPs, for example in a lab
+python beacon-hunter.py capture.pcap --include-internal
+
+# Manually set the event separation threshold to one second
+python beacon-hunter.py capture.pcap --min-gap 1
+
+# Consider only new TCP SYN packets
+python beacon-hunter.py capture.pcap --syn-only
+
+# Print the packets assigned to each generated event
+python beacon-hunter.py capture.pcap --debug-events
+
+# Save the structured report to CSV while keeping the terminal report
+python beacon-hunter.py capture.pcap --csv report.csv
+
+# Include bidirectional session counters in the CSV
+python beacon-hunter.py capture.pcap --show-sessions --csv report.csv
+
+# Inspect event grouping with a 0.7-second threshold
+python beacon-hunter.py capture.pcap --min-gap 0.7 --debug-events
 ```
 
-## Output
+| Option | Default | Purpose |
+|---|---:|---|
+| `pcap` | required | PCAP or PCAPNG path |
+| `--include-internal` | off | Also include internal, loopback, link-local, multicast, and reserved destination addresses |
+| `--min-gap N` | auto | Event-separation threshold in seconds |
+| `--threshold R` | `0.55` | Flag when score ratio is at least `R` |
+| `--top N` | `15` | Limit displayed rows; all eligible flows are analyzed. Candidate flows sort by packets, beacon results show suspects first |
+| `--syn-only` | off | Keep TCP SYN packets without ACK; excludes UDP and established TCP packets |
+| `--debug-events` | off | Print each event's relative start time, packet count, payload sizes, and packet members |
+| `--show-sessions` | off | Include bidirectional TCP/UDP session counters in the terminal and CSV report |
+| `--csv FILE` | off | Write a structured beacon summary plus separate DNS and attribution CSVs; sessions/debug get their own files when requested |
+| `--no-color` | off | Disable ANSI colors in terminal output |
 
-For each candidate destination, the tool reports:
+The main CSV has one row per analyzed flow with separate source IP, destination IP,
+protocol, and destination port columns. Its score is out of 100 and timing
+variation is labeled CV %. The beacon rows sort by status, then score.
+`report_dns.csv` has a `dns_query_id` shared by every answer for one query.
+`report_attribution.csv` contains sessions with DNS or TLS SNI attribution evidence, with a stable `session_id` and separate endpoint columns. It is not a complete session inventory. `--show-sessions` adds
+`report_sessions.csv`; `--debug-events` adds `report_debug.csv`;
+routing shadows are written to `report_shadows.csv`.
 
-- `raw_packets` — total packets sent to that IP
-- `events` — number of distinct check-in events after burst merging
-- `mean_interval` — average time between check-ins (seconds)
-- `stdev` — standard deviation of intervals
-- `cv` — coefficient of variation (jitter ratio)
-- `jitter_pct` — jitter as a percentage
-- `is_beacon_suspect` — whether the destination matches beacon-like behavior
 
-A summary at the end lists all flagged beacon candidates with their interval and jitter.
+By default, beacon timing and payload-size scoring use only packets carrying
+application payload. Zero-payload TCP control packets are kept separately and
+shown by `--debug-events`, but do not start or distort application-data events.
+`--syn-only` switches scoring to the separate TCP SYN-without-ACK series;
+payload-size scoring can still apply if a SYN carries data.
 
-## Tuning tips
+`--debug-events` shows how the selected `--min-gap` groups the active series.
+By default that is payload-bearing packets; with `--syn-only` it is connection
+attempts. Zero-payload TCP control packets are printed separately. With an
+automatic threshold, the output includes the chosen value and its source. Event
+membership is anchored at the first packet in each event: a packet joins the
+current event while its timestamp is less than `min_gap` after that event's
+start; otherwise it starts a new event. The option is diagnostic and does not
+change scoring.
 
-- No suspects found? Try `--syn-only` for cleaner detection over HTTP/HTTPS C2 traffic.
-- Missing slow beacons? Try a larger `--min-gap` (e.g. `2.0`).
+## How scoring works
 
-## Disclaimer
+For each candidate group, timestamps from the active series are merged into
+events using `--min-gap`. The default series is packets with non-empty TCP or
+UDP payload; `--syn-only` uses TCP SYN packets without ACK. Zero-payload TCP
+control packets are not part of application-data timing. The default gap is an
+automatic heuristic that searches for a large ratio jump between sorted packet
+gaps; it falls back to one second when it finds no clear split.
 
-This tool is intended for authorized security research, threat hunting, and defensive analysis of network captures you are permitted to inspect.
+| Signal | Maximum | Current interpretation |
+|---|---:|---|
+| Timing regularity | 35 | Coefficient of variation (standard deviation / mean) of intervals between event starts; lower is more regular |
+| Modal-size recurrence | 30 | Share of events containing a payload near the most common eligible payload size |
+| Modal smallness | 15 | Adds points when that modal payload is small |
+| Event count | 20 | Adds points for more observed events |
+
+Eligible payload sizes are `16 <= size < 1400` bytes. `1400` is a fixed heuristic cutoff named `BULK_MSS`; it is **not** the TCP MSS negotiated for a connection, and the same cutoff is applied to UDP. If fewer than three eligible payloads exist, size-based signals are omitted and the score is normalized to the signals available.
+
+The default threshold is 55% of the available points. The score is not a malware probability. Small or repeated DNS/HTTP/control messages can raise the size signals, and event count depends on capture duration.
+
+## DNS context
+
+The DNS report pairs recognized queries and responses by transport, endpoint addresses and ports, and DNS transaction ID. It displays query names and types, response codes, answer values and TTLs, unanswered queries, and mean query/response time when available.
+
+Answer-section CNAME chains are followed to their final A/AAAA records for
+connection correlation. The effective TTL is the shortest TTL across the
+alias chain and final address record.
+
+Recognized DNS packets are reported separately and excluded from generic beacon scoring, avoiding false positives caused by repeated, similarly sized DNS queries. For A/AAAA answers, the analyzer compares the DNS client and response time with connection starts to the returned IP. It tracks TCP connections by 5-tuple and uses the observed SYN timestamp; TTL is checked at connection start, so an established connection stays correlated after the TTL expires. Results carry an attribution and evidence code: `CONFIRMED` / `HTTP_REQUEST_TARGET` when a matching plaintext HTTP request target and Host are observed, `HIGH` / `TLS_SNI_DNS_MATCH` when TLS SNI matches a DNS candidate, `HIGH` / `TLS_SNI_ONLY` when SNI is visible but DNS is absent, `CONFLICT` / `TLS_SNI_DNS_CONFLICT` when SNI differs from observed DNS candidates, `MEDIUM` / `DNS_IP_TIME_UNIQUE` for one DNS-name candidate at an observed TCP SYN, `LOW` / `DNS_IP_TIME_FIRST_OBSERVED` when only the first packet of a connection is captured, and `AMBIGUOUS` / `DNS_IP_TIME_MATCH` when multiple DNS names share the IP and time window without direct hostname evidence. These labels describe correlation evidence, not maliciousness. HTTP Host is normally encrypted inside HTTPS and is not readable from an ordinary PCAP; TLS SNI can be visible in the ClientHello unless Encrypted ClientHello (ECH) is used. HTTP request parsing and TLS SNI parsing currently require the relevant header or complete ClientHello to appear in one TCP packet; TCP stream reassembly is not implemented. DNS-specific beacon scoring is not implemented. Encrypted DNS such as DoH/DoT is not parsed as ordinary DNS.
+
+## Synthetic PCAP evaluation
+
+The reproducible suite is under [`tests/fixtures/production-like/`](tests/fixtures/production-like/), with scenario details in its [`manifest.json`](tests/fixtures/production-like/manifest.json). Generate it with:
+
+```powershell
+python tests/pcap_suite/generate.py
+```
+
+Run every capture with the analyzer:
+
+```powershell
+Get-ChildItem tests/fixtures/production-like/*.pcap | ForEach-Object {
+    Write-Host "`n=== $($_.Name) ==="
+    python beacon-hunter.py $_.FullName
+}
+```
+
+The captures are synthetic and deterministic; they are not production captures and contain no real malware or user data. They cover regular and jittered timing, changing payload sizes, growing intervals, sparse check-ins, TCP/UDP, DNS, bursty background traffic, and mixed same-service traffic. See [`tests/pcap_suite/README.md`](tests/pcap_suite/README.md) for the full matrix and current baseline results.
+
+The baseline illustrates both strengths and limits: fixed-size TCP patterns were detected at several jitter levels, while variable-size/growing patterns and variable-size UDP were missed. A benign periodic updater was flagged; recognized DNS is now excluded from generic scoring. Benign traffic mixed into the same service group hid a beacon. These are results from controlled synthetic cases, not field accuracy measurements.
+
+
+## Known limitations
+
+- It is offline-only and loads the full capture into memory.
+- It does not reconstruct TCP sessions, reassemble streams, or identify the originating process.
+- TCP retransmissions are not deduplicated; payload-bearing retransmissions can still affect event timing and size signals.
+- Source-port omission can merge separate applications sharing a remote service.
+- Timing/event thresholds and score weights are hand-written heuristics, not calibrated against a representative labeled corpus.
+- The payload-size heuristic is not application-aware; the fixed 1400-byte cutoff is not a measured MSS.
+- DNS is reported separately and excluded from generic scoring; A/AAAA answers are correlated to connection starts by client IP, answer IP, 5-tuple, and TTL window. This is DNS context, not DNS-specific beacon scoring.
+- It does not use destination reputation, TLS fingerprints, or endpoint telemetry; HTTP Host and TLS SNI are used only as DNS-correlation evidence, not in beacon scoring.
+- IPv4 infrastructure hints and routing-shadow matching are rough heuristics and can mislabel unrelated traffic.
